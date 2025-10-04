@@ -1,20 +1,26 @@
 'use strict';
 
-const inputs = [...document.querySelectorAll('.field-text')];
+const form = document.querySelector('form');
 
-inputs.forEach((input) => {
-  const lable = document.createElement('label');
+const inputs = form ? [...form.querySelectorAll('input')] : [];
 
-  lable.classList.add('field-label');
-  lable.classList.add('for');
-  lable.textContent = input.name;
-  lable.setAttribute('for', input.id);
-  input.before(lable);
+inputs.forEach((input, index) => {
+  const label = document.createElement('label');
 
-  const inputName = input.name;
+  label.classList.add('field-label');
+  label.textContent = input.name;
 
-  input.setAttribute(
-    'placeholder',
-    inputName[0].toUpperCase() + inputName.slice(1),
-  );
+  if (!input.id) {
+    input.id = `input-${input.name || index}`;
+  }
+
+  label.setAttribute('for', input.id);
+  input.before(label);
+
+  const inputName = input.name || '';
+  const placeholder = inputName
+    ? inputName[0].toUpperCase() + inputName.slice(1)
+    : '';
+
+  input.setAttribute('placeholder', placeholder);
 });
